@@ -62,6 +62,7 @@ class Buyer(db_conn.DBConn):
             self.conn.connection.commit()
             order_id = uid
         except pymysql.Error as e:
+            print(e)
             logging.info("528, {}".format(str(e)))
             return 528, "{}".format(str(e)), ""
         except BaseException as e:
@@ -89,7 +90,7 @@ class Buyer(db_conn.DBConn):
                 return error.error_authorization_fail()
 
             cursor = conn.execute(
-                "SELECT balance, password FROM user WHERE user_id = %s;", (buyer_id,)
+                'SELECT balance, password FROM user WHERE user_id = %s', (buyer_id,)
             )
             row = conn.fetchone()
             if row is None:
@@ -125,15 +126,15 @@ class Buyer(db_conn.DBConn):
                 return error.error_not_sufficient_funds(order_id)
 
             cursor = conn.execute(
-                "UPDATE user set balance = balance - %s"
-                "WHERE user_id = %s AND balance >= %s",
+                "UPDATE user set balance = balance - %s "
+                "WHERE user_id = %s AND balance >= %s ",
                 (total_price, buyer_id, total_price),
             )
             if conn.rowcount == 0:
                 return error.error_not_sufficient_funds(order_id)
 
             cursor = conn.execute(
-                "UPDATE user set balance = balance + %s" "WHERE user_id = %s",
+                'UPDATE user SET balance = balance + %s WHERE user_id = %s',
                 (total_price, buyer_id),
             )
 
@@ -155,6 +156,7 @@ class Buyer(db_conn.DBConn):
             conn.connection.commit()
 
         except pymysql.Error as e:
+            print(e)
             return 528, "{}".format(str(e))
 
         except BaseException as e:

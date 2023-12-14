@@ -31,7 +31,6 @@ class Seller(db_conn.DBConn):
             )
             self.conn.connection.commit()
         except pymysql.Error as e:
-            print(e)
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))

@@ -15,7 +15,7 @@ class Store:
         try:
             conn = self.get_db_conn()
             conn.execute("""
-                CREATE TABLE IF NOT EXISTS `user`(
+                CREATE TABLE IF NOT EXISTS user(
                     user_id VARCHAR(150) PRIMARY KEY,
                     password VARCHAR(150) NOT NULL,
                     balance INT NOT NULL,
@@ -43,19 +43,21 @@ class Store:
             """)
 
             conn.execute("""
-                "CREATE TABLE IF NOT EXISTS new_order(
-                order_id VARCHAR(200) primary key,
-                user_id VARCHAR(150),
-                store_id VARCHAR(150))"
+                CREATE TABLE IF NOT EXISTS new_order(
+                    order_id VARCHAR(200) primary key,
+                    user_id VARCHAR(100),
+                    store_id VARCHAR(100)
+                )
             """)
 
             conn.execute("""
-                "CREATE TABLE IF NOT EXISTS new_order_detail(
-                order_id VARCHAR(200),
-                book_id VARCHAR(150),
-                count INT,
-                price INT, 
-                PRIMARY KEY(order_id, book_id))"
+                CREATE TABLE IF NOT EXISTS new_order_detail(
+                    order_id VARCHAR(200),
+                    book_id VARCHAR(100),
+                    count INT,
+                    price INT,
+                    primary key(order_id, book_id)
+                )
             """)
 
             conn.connection.commit()

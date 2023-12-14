@@ -65,7 +65,8 @@ class User(db_conn.DBConn):
                 (user_id, password, 0, token, terminal),
             )
             self.conn.connection.commit()
-        except pymysql.Error:
+        except pymysql.Error as e:
+            print(e)
             return error.error_exist_user_id(user_id)
         return 200, "ok"
 
