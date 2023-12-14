@@ -1,4 +1,5 @@
 import sqlite3 as sqlite
+import pymysql
 import uuid
 import json
 import logging
@@ -24,10 +25,10 @@ class Buyer(db_conn.DBConn):
             for book_id, count in id_and_count:
                 cursor = self.conn.execute(
                     "SELECT book_id, stock_level, book_info FROM store "
-                    "WHERE store_id = ? AND book_id = ?;",
+                    "WHERE store_id = %s AND book_id = %s;",
                     (store_id, book_id),
                 )
-                row = cursor.fetchone()
+                row = self.conn.fetchone()
                 if row is None:
                     return error.error_non_exist_book_id(book_id) + (order_id,)
 
@@ -40,27 +41,27 @@ class Buyer(db_conn.DBConn):
                     return error.error_stock_level_low(book_id) + (order_id,)
 
                 cursor = self.conn.execute(
-                    "UPDATE store set stock_level = stock_level - ? "
-                    "WHERE store_id = ? and book_id = ? and stock_level >= ?; ",
+                    "UPDATE store set stock_level = stock_level - %s "
+                    "WHERE store_id = %s and book_id = %s and stock_level >= %s; ",
                     (count, store_id, book_id, count),
                 )
-                if cursor.rowcount == 0:
+                if self.conn.rowcount == 0:
                     return error.error_stock_level_low(book_id) + (order_id,)
 
                 self.conn.execute(
                     "INSERT INTO new_order_detail(order_id, book_id, count, price) "
-                    "VALUES(?, ?, ?, ?);",
+                    "VALUES(%s, %s, %s, %s);",
                     (uid, book_id, count, price),
                 )
 
             self.conn.execute(
                 "INSERT INTO new_order(order_id, store_id, user_id) "
-                "VALUES(?, ?, ?);",
+                "VALUES(%s, %s, %s);",
                 (uid, store_id, user_id),
             )
-            self.conn.commit()
+            self.conn.connection.commit()
             order_id = uid
-        except sqlite.Error as e:
+        except pymysql.Error as e:
             logging.info("528, {}".format(str(e)))
             return 528, "{}".format(str(e)), ""
         except BaseException as e:
@@ -73,10 +74,10 @@ class Buyer(db_conn.DBConn):
         conn = self.conn
         try:
             cursor = conn.execute(
-                "SELECT order_id, user_id, store_id FROM new_order WHERE order_id = ?",
+                "SELECT order_id, user_id, store_id FROM new_order WHERE order_id = %s",
                 (order_id,),
             )
-            row = cursor.fetchone()
+            row = conn.fetchone()
             if row is None:
                 return error.error_invalid_order_id(order_id)
 
@@ -88,9 +89,9 @@ class Buyer(db_conn.DBConn):
                 return error.error_authorization_fail()
 
             cursor = conn.execute(
-                "SELECT balance, password FROM user WHERE user_id = ?;", (buyer_id,)
+                "SELECT balance, password FROM user WHERE user_id = %s;", (buyer_id,)
             )
-            row = cursor.fetchone()
+            row = conn.fetchone()
             if row is None:
                 return error.error_non_exist_user_id(buyer_id)
             balance = row[0]
@@ -98,10 +99,10 @@ class Buyer(db_conn.DBConn):
                 return error.error_authorization_fail()
 
             cursor = conn.execute(
-                "SELECT store_id, user_id FROM user_store WHERE store_id = ?;",
+                "SELECT store_id, user_id FROM user_store WHERE store_id = %s;",
                 (store_id,),
             )
-            row = cursor.fetchone()
+            row = conn.fetchone()
             if row is None:
                 return error.error_non_exist_store_id(store_id)
 
@@ -111,11 +112,11 @@ class Buyer(db_conn.DBConn):
                 return error.error_non_exist_user_id(seller_id)
 
             cursor = conn.execute(
-                "SELECT book_id, count, price FROM new_order_detail WHERE order_id = ?;",
+                "SELECT book_id, count, price FROM new_order_detail WHERE order_id = %s;",
                 (order_id,),
             )
             total_price = 0
-            for row in cursor:
+            for row in conn:
                 count = row[1]
                 price = row[2]
                 total_price = total_price + price * count
@@ -124,36 +125,36 @@ class Buyer(db_conn.DBConn):
                 return error.error_not_sufficient_funds(order_id)
 
             cursor = conn.execute(
-                "UPDATE user set balance = balance - ?"
-                "WHERE user_id = ? AND balance >= ?",
+                "UPDATE user set balance = balance - %s"
+                "WHERE user_id = %s AND balance >= %s",
                 (total_price, buyer_id, total_price),
             )
-            if cursor.rowcount == 0:
+            if conn.rowcount == 0:
                 return error.error_not_sufficient_funds(order_id)
 
             cursor = conn.execute(
-                "UPDATE user set balance = balance + ?" "WHERE user_id = ?",
+                "UPDATE user set balance = balance + %s" "WHERE user_id = %s",
                 (total_price, buyer_id),
             )
 
-            if cursor.rowcount == 0:
+            if conn.rowcount == 0:
                 return error.error_non_exist_user_id(buyer_id)
 
             cursor = conn.execute(
-                "DELETE FROM new_order WHERE order_id = ?", (order_id,)
+                "DELETE FROM new_order WHERE order_id = %s", (order_id,)
             )
-            if cursor.rowcount == 0:
+            if conn.rowcount == 0:
                 return error.error_invalid_order_id(order_id)
 
             cursor = conn.execute(
-                "DELETE FROM new_order_detail where order_id = ?", (order_id,)
+                "DELETE FROM new_order_detail where order_id = %s", (order_id,)
             )
-            if cursor.rowcount == 0:
+            if conn.rowcount == 0:
                 return error.error_invalid_order_id(order_id)
 
-            conn.commit()
+            conn.connection.commit()
 
-        except sqlite.Error as e:
+        except pymysql.Error as e:
             return 528, "{}".format(str(e))
 
         except BaseException as e:
@@ -164,9 +165,9 @@ class Buyer(db_conn.DBConn):
     def add_funds(self, user_id, password, add_value) -> (int, str):
         try:
             cursor = self.conn.execute(
-                "SELECT password  from user where user_id=?", (user_id,)
+                "SELECT password  from user where user_id=%s", (user_id,)
             )
-            row = cursor.fetchone()
+            row = self.conn.fetchone()
             if row is None:
                 return error.error_authorization_fail()
 
@@ -174,14 +175,14 @@ class Buyer(db_conn.DBConn):
                 return error.error_authorization_fail()
 
             cursor = self.conn.execute(
-                "UPDATE user SET balance = balance + ? WHERE user_id = ?",
+                "UPDATE user SET balance = balance + %s WHERE user_id = %s",
                 (add_value, user_id),
             )
-            if cursor.rowcount == 0:
+            if self.conn.rowcount == 0:
                 return error.error_non_exist_user_id(user_id)
 
-            self.conn.commit()
-        except sqlite.Error as e:
+            self.conn.connection.commit()
+        except pymysql.Error as e:
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))

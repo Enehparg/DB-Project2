@@ -1,4 +1,5 @@
 import sqlite3 as sqlite
+import pymysql
 from be.model import error
 from be.model import db_conn
 
@@ -25,11 +26,11 @@ class Seller(db_conn.DBConn):
 
             self.conn.execute(
                 "INSERT into store(store_id, book_id, book_info, stock_level)"
-                "VALUES (?, ?, ?, ?)",
+                "VALUES (%s, %s, %s, %s)",
                 (store_id, book_id, book_json_str, stock_level),
             )
-            self.conn.commit()
-        except sqlite.Error as e:
+            self.conn.connection.commit()
+        except pymysql.Error as e:
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))
@@ -46,13 +47,13 @@ class Seller(db_conn.DBConn):
             if not self.book_id_exist(store_id, book_id):
                 return error.error_non_exist_book_id(book_id)
 
-            self.conn.execute(
-                "UPDATE store SET stock_level = stock_level + ? "
-                "WHERE store_id = ? AND book_id = ?",
+            self.conn.connection.execute(
+                "UPDATE store SET stock_level = stock_level + %s "
+                "WHERE store_id = %s AND book_id = %s",
                 (add_stock_level, store_id, book_id),
             )
-            self.conn.commit()
-        except sqlite.Error as e:
+            self.conn.connection.commit()
+        except pymysql.Error as e:
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))
@@ -65,11 +66,11 @@ class Seller(db_conn.DBConn):
             if self.store_id_exist(store_id):
                 return error.error_exist_store_id(store_id)
             self.conn.execute(
-                "INSERT into user_store(store_id, user_id)" "VALUES (?, ?)",
+                "INSERT into user_store(store_id, user_id)" "VALUES (%s, %s)",
                 (store_id, user_id),
             )
-            self.conn.commit()
-        except sqlite.Error as e:
+            self.conn.connection.commit()
+        except pymysql.Error as e:
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))
