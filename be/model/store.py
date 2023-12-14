@@ -37,7 +37,7 @@ class Store:
                     store_id VARCHAR(150),
                     book_id VARCHAR(150),
                     book_info LONGTEXT,
-                    stoke_level INT,     
+                    stock_level INT,     
                     primary key(store_id, book_id)
                 )
             """)

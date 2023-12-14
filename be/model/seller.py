@@ -31,6 +31,7 @@ class Seller(db_conn.DBConn):
             )
             self.conn.connection.commit()
         except pymysql.Error as e:
+            print(e)
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))
@@ -47,7 +48,7 @@ class Seller(db_conn.DBConn):
             if not self.book_id_exist(store_id, book_id):
                 return error.error_non_exist_book_id(book_id)
 
-            self.conn.connection.execute(
+            self.conn.execute(
                 "UPDATE store SET stock_level = stock_level + %s "
                 "WHERE store_id = %s AND book_id = %s",
                 (add_stock_level, store_id, book_id),
