@@ -4,6 +4,7 @@ from be.model import error
 from be.model import db_conn
 
 
+
 class Seller(db_conn.DBConn):
     def __init__(self):
         db_conn.DBConn.__init__(self)
@@ -25,16 +26,18 @@ class Seller(db_conn.DBConn):
                 return error.error_exist_book_id(book_id)
 
             self.conn.execute(
-                "INSERT into store(store_id, book_id, book_info, stock_level)"
+                "INSERT INTO store(store_id, book_id, book_info, stock_level)"
                 "VALUES (%s, %s, %s, %s)",
                 (store_id, book_id, book_json_str, stock_level),
             )
             self.conn.connection.commit()
         except pymysql.Error as e:
+            print(e)
             return 528, "{}".format(str(e))
         except BaseException as e:
             return 530, "{}".format(str(e))
         return 200, "ok"
+
 
     def add_stock_level(
         self, user_id: str, store_id: str, book_id: str, add_stock_level: int
