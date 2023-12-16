@@ -5,8 +5,7 @@ from fe.access.new_buyer import register_new_buyer
 from fe.access.book import Book
 import uuid
 
-
-class TestDeliverGoods:
+class TestReceive:
     @pytest.fixture(autouse=True)
     def pre_run_initialization(self):
         self.seller_id = "test_new_order_seller_id_{}".format(str(uuid.uuid1()))
@@ -34,15 +33,40 @@ class TestDeliverGoods:
             else:
                 self.total_price = self.total_price + int(book.price) * num
         yield
-
+    
     def test_error_user_id(self):
-        code = self.seller.deliver(self.buyer_id+'_x', self.store_id, self.order_id)
+        self.buyer.user_id = self.buyer.user_id + "_x"
+        code = self.buyer.receive(self.order_id)
         assert code != 200
 
-    def test_not_pay(self):
+    def test_error_password(self):
+        self.buyer.password = self.buyer.password + "_x"
+        code = self.buyer.receive(self.order_id)
+        assert code != 200
+
+    def test_error_order_id(self):
         code = self.buyer.add_funds(self.total_price)
         assert code == 200
+        code = self.buyer.payment(self.order_id)
+        assert code == 200
+
+        code = self.buyer.receive(self.order_id)
+        assert code != 200
         code = self.seller.deliver(self.buyer_id, self.store_id, self.order_id)
+        assert code == 200
+        code = self.buyer.receive(self.order_id + '_x')
+        assert code != 200
+
+    def test_not_deliver(self):
+        # 未付款
+        code = self.buyer.receive(self.order_id)
+        assert code != 200
+        code = self.buyer.add_funds(self.total_price)
+        assert code == 200
+        code = self.buyer.payment(self.order_id)
+        assert code == 200
+        # 未发货
+        code = self.buyer.receive(self.order_id)
         assert code != 200
 
     def test_ok(self):
@@ -53,11 +77,10 @@ class TestDeliverGoods:
         code = self.seller.deliver(self.buyer_id, self.store_id, self.order_id)
         assert code == 200
 
-    def test_already_deliver(self):
-        self.test_ok()
-        code = self.seller.deliver(self.buyer_id, self.store_id, self.order_id)
-        assert code != 200
+        code = self.buyer.receive(self.order_id)
+        assert code == 200
 
-    def test_error_order_id(self):
-        code = self.seller.deliver(self.buyer_id, self.store_id, self.order_id+'_x')
+    def test_already_receive(self):
+        self.test_ok()
+        code = self.buyer.receive(self.order_id)
         assert code != 200

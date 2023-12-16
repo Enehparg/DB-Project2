@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import sqlite3 as sqlite
 import pymysql
 import uuid
@@ -152,20 +154,20 @@ class Buyer(db_conn.DBConn):
 
             cursor = conn.execute(
                 "UPDATE new_order set status = %s WHERE order_id = %s",
-                ('待发货',order_id),
+                ('待发货', order_id),
             )
 
-            cursor = conn.execute(
-                "DELETE FROM new_order WHERE order_id = %s", (order_id,)
-            )
-            if conn.rowcount == 0:
-                return error.error_invalid_order_id(order_id)
+            #cursor = conn.execute(
+            #    "DELETE FROM new_order WHERE order_id = %s", (order_id,)
+            #)
+            #if conn.rowcount == 0:
+            #    return error.error_invalid_order_id(order_id)
 
-            cursor = conn.execute(
-                "DELETE FROM new_order_detail where order_id = %s", (order_id,)
-            )
-            if conn.rowcount == 0:
-                return error.error_invalid_order_id(order_id)
+            #cursor = conn.execute(
+            #    "DELETE FROM new_order_detail where order_id = %s", (order_id,)
+            #)
+            #if conn.rowcount == 0:
+            #    return error.error_invalid_order_id(order_id)
 
             conn.connection.commit()
 
@@ -203,4 +205,48 @@ class Buyer(db_conn.DBConn):
         except BaseException as e:
             return 530, "{}".format(str(e))
 
+        return 200, "ok"
+
+    def receive(self, user_id: str, password: str, order_id: str):
+        try:
+            self.conn.execute(
+                "SELECT password  from user where user_id=%s", (user_id,)
+            )
+            row = self.conn.fetchone()
+            if row is None:
+                return error.error_authorization_fail()
+
+            if row[0] != password:
+                return error.error_authorization_fail()
+            
+            self.conn.execute(
+                "SELECT order_id ,status FROM new_order WHERE order_id = %s",
+                (order_id,),
+            )
+
+            if self.conn.rowcount == 0:
+                return error.error_invalid_order_id(user_id)
+            
+            row = self.conn.fetchone()
+
+            status = row[1]
+            if status == "已完成":
+                return error.error_order_status(order_id)
+            if status == "待发货":
+                return error.error_order_status(order_id)
+            if status == "待支付":
+                return error.error_order_status(order_id)
+            
+            self.conn.execute(
+                "UPDATE new_order SET status = %s, complete_time=%s WHERE order_id = %s",
+                ('已完成', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), order_id),
+            )
+
+            self.conn.connection.commit()
+
+        except pymysql.Error as e:
+            print(e)
+            return 528, "{}".format(str(e))
+        except BaseException as e:
+            return 530, "{}".format(str(e))
         return 200, "ok"

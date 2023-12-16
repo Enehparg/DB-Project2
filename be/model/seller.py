@@ -83,7 +83,7 @@ class Seller(db_conn.DBConn):
         try:
             if not self.user_id_exist(user_id):
                 return error.error_non_exist_user_id(user_id)
-            if self.store_id_exist(store_id):
+            if not self.store_id_exist(store_id):
                 return error.error_exist_store_id(store_id)
 
             self.conn.execute(
@@ -98,8 +98,12 @@ class Seller(db_conn.DBConn):
             order_id = row[0]
             status = row[1]
 
-            if status == '已发货' or '已付款' or '已完成':
-                return error.error_order_status()
+            if status == '待收货':
+                return error.error_order_status(order_id)
+            if status == '待支付':
+                return error.error_order_status(order_id)
+            if status == '已完成':
+                return error.error_order_status(order_id)
             
             self.conn.execute(
                 "UPDATE new_order set status = %s WHERE order_id = %s",

@@ -47,7 +47,9 @@ class Store:
                     order_id VARCHAR(200) primary key,
                     user_id VARCHAR(100),
                     store_id VARCHAR(100),
-                    status VARCHAR(20)
+                    status VARCHAR(20),
+                    complete_time DATETIME,
+                    TTL DATETIME     
                 )
             """)
 
@@ -67,8 +69,8 @@ class Store:
             conn.connection.rollback()
 
     def get_db_conn(self) :
-        return pymysql.connect(host = 'localhost', user='root', passwd='root', port=3306, database='bookstore').cursor()
-
+        db = pymysql.connect(host='localhost', user='root', passwd='root', port=3306, database='bookstore1')
+        return db.cursor()
 
 database_instance: Store = None
 
