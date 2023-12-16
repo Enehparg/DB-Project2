@@ -46,7 +46,8 @@ class Store:
                 CREATE TABLE IF NOT EXISTS new_order(
                     order_id VARCHAR(200) primary key,
                     user_id VARCHAR(100),
-                    store_id VARCHAR(100)
+                    store_id VARCHAR(100),
+                    status VARCHAR(20)
                 )
             """)
 

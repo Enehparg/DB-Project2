@@ -53,12 +53,13 @@ class Buyer(db_conn.DBConn):
                     "VALUES(%s, %s, %s, %s);",
                     (uid, book_id, count, price),
                 )
-
+            ###修改状态###
             self.conn.execute(
-                "INSERT INTO new_order(order_id, store_id, user_id) "
-                "VALUES(%s, %s, %s);",
-                (uid, store_id, user_id),
+                "INSERT INTO new_order(order_id, store_id, user_id, status) "
+                "VALUES(%s, %s, %s, %s);",
+                (uid, store_id, user_id, "待支付"),
             )
+            ####
             self.conn.connection.commit()
             order_id = uid
         except pymysql.Error as e:
@@ -75,7 +76,7 @@ class Buyer(db_conn.DBConn):
         conn = self.conn
         try:
             cursor = conn.execute(
-                "SELECT order_id, user_id, store_id FROM new_order WHERE order_id = %s",
+                "SELECT order_id, user_id, store_id, status FROM new_order WHERE order_id = %s",
                 (order_id,),
             )
             row = conn.fetchone()
@@ -85,6 +86,14 @@ class Buyer(db_conn.DBConn):
             order_id = row[0]
             buyer_id = row[1]
             store_id = row[2]
+            status = row[3]
+            
+            ###deliver部分，针对status的例外检测###
+
+            if status != '待支付':
+                return error.error_order_status(order_id)
+
+            ###end###
 
             if buyer_id != user_id:
                 return error.error_authorization_fail()
@@ -135,11 +144,16 @@ class Buyer(db_conn.DBConn):
 
             cursor = conn.execute(
                 'UPDATE user SET balance = balance + %s WHERE user_id = %s',
-                (total_price, buyer_id),
+                (total_price, seller_id),
             )
 
             if conn.rowcount == 0:
-                return error.error_non_exist_user_id(buyer_id)
+                return error.error_non_exist_user_id(seller_id)
+
+            cursor = conn.execute(
+                "UPDATE new_order set status = %s WHERE order_id = %s",
+                ('待发货',order_id),
+            )
 
             cursor = conn.execute(
                 "DELETE FROM new_order WHERE order_id = %s", (order_id,)
