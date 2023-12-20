@@ -50,3 +50,22 @@ def receive():
     b= Buyer()
     code, message = b.receive(user_id,password,order_id)
     return jsonify({"message": message}), code
+
+@bp_buyer.route("/cancel", methods=["POST"])
+def cancel():
+    user_id = request.json.get("user_id")
+    password = request.json.get("password")
+    order_id = request.json.get("order_id")
+
+    b= Buyer()
+    code, message = b.cancel(user_id,password,order_id)
+    return jsonify({"message": message}), code
+
+@bp_buyer.route("/history", methods=["POST"])
+def history():
+    user_id = request.json.get("user_id")
+    password = request.json.get("password")
+
+    b= Buyer()
+    code, message,orders = b.history(user_id,password)
+    return jsonify({"message": message,"orders": orders}), code

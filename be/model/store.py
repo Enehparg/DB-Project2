@@ -20,7 +20,8 @@ class Store:
                     password VARCHAR(150) NOT NULL,
                     balance INT NOT NULL,
                     token TEXT,
-                    terminal TEXT
+                    terminal TEXT,
+                    INDEX index_user (user_id)
                 )
             """)
 
@@ -28,7 +29,8 @@ class Store:
                 CREATE TABLE IF NOT EXISTS user_store(
                     user_id VARCHAR(150),
                     store_id VARCHAR(150),
-                    primary key(user_id, store_id)
+                    primary key(user_id, store_id),
+                    INDEX index_user_store (store_id)
                 )
             """)
 
@@ -38,7 +40,8 @@ class Store:
                     book_id VARCHAR(150),
                     book_info LONGTEXT,
                     stock_level INT,     
-                    primary key(store_id, book_id)
+                    primary key(store_id, book_id),
+                    INDEX index_store (store_id, book_id)
                 )
             """)
 
@@ -49,7 +52,8 @@ class Store:
                     store_id VARCHAR(100),
                     status VARCHAR(20),
                     complete_time DATETIME,
-                    TTL DATETIME     
+                    TTL DATETIME,
+                    INDEX index_new_order(order_id)
                 )
             """)
 
@@ -59,7 +63,8 @@ class Store:
                     book_id VARCHAR(100),
                     count INT,
                     price INT,
-                    primary key(order_id, book_id)
+                    primary key(order_id, book_id),
+                    INDEX index_order_detail (order_id, book_id)
                 )
             """)
 

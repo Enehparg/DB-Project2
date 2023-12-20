@@ -55,13 +55,13 @@ class Buyer(db_conn.DBConn):
                     "VALUES(%s, %s, %s, %s);",
                     (uid, book_id, count, price),
                 )
-            ###修改状态###
+                
             self.conn.execute(
                 "INSERT INTO new_order(order_id, store_id, user_id, status) "
                 "VALUES(%s, %s, %s, %s);",
                 (uid, store_id, user_id, "待支付"),
             )
-            ####
+
             self.conn.connection.commit()
             order_id = uid
         except pymysql.Error as e:
@@ -250,3 +250,145 @@ class Buyer(db_conn.DBConn):
         except BaseException as e:
             return 530, "{}".format(str(e))
         return 200, "ok"
+    
+    def cancel(self, user_id:str, password : str, order_id: str):
+        try:
+            self.conn.execute(
+                "SELECT password  from user where user_id=%s", (user_id,)
+            )
+            row = self.conn.fetchone()
+            if row is None:
+                return error.error_authorization_fail()
+
+            if row[0] != password:
+                return error.error_authorization_fail()
+            
+            self.conn.execute(
+                "SELECT order_id,store_id,status FROM new_order WHERE order_id = %s",
+                (order_id,),
+            )
+
+            row = self.conn.fetchone()
+            if row is None:
+                return error.error_invalid_order_id(order_id)
+            
+            store_id = row[1]
+            status = row[2]
+            if status != '待支付':
+                return error.error_cancel(order_id)
+            
+            self.conn.execute(
+                "SELECT book_id, count FROM new_order_detail WHERE order_id= %s",
+                (order_id,),
+            )
+            row = self.conn.fetchall()
+            for each in row:
+                book_id = each[0]
+                count = each[1]
+                self.conn.execute(
+                    "UPDATE store SET stock_level = stock_level + %s WHERE store_id=%s AND book_id=%s ",
+                    (count, store_id, book_id),
+                )
+
+            self.conn.execute(
+                "DELETE FROM new_order_detail WHERE order_id=%s",
+                (order_id,),
+            )
+
+            self.conn.execute(
+                "DELETE FROM new_order WHERE order_id=%s",
+                (order_id,),
+            )
+            self.conn.connection.commit()
+        except pymysql.Error as e:
+            print(e)
+            return 528, "{}".format(str(e))
+        except BaseException as e:
+            return 530, "{}".format(str(e))
+        return 200, "ok"
+
+    def history(self, user_id: str, password: str):
+        try:
+            self.conn.execute(
+                "SELECT password  from user where user_id=%s", (user_id,)
+            )
+            row = self.conn.fetchone()
+            if row is None:
+                return error.error_authorization_fail()
+
+            if row[0] != password:
+                return error.error_authorization_fail()
+
+            self.conn.execute(
+                "SELECT order_id, status, complete_time from new_order WHERE user_id = %s",
+                (user_id,),
+            )
+
+            row1 = self.conn.fetchall()
+            orders = []
+            order = {}
+            books = []
+
+            for each in row1:
+                order_id = each[0]
+                status = each[1]
+                complete_time = each[2]
+
+                self.conn.execute(
+                    "SELECT book_id, count, price FROM new_order_detail WHERE order_id = %s",
+                    (order_id,),
+                )
+
+                row2 = self.conn.fetchall()
+                for book in row2:
+                    a_book = [book[0],book[1],book[2]]
+                    books.append(a_book)
+
+                order = {
+                    'order_id': order_id,
+                    'status': status,
+                    'completion_time': complete_time,
+                    'books': books,
+                }
+
+                orders.append(order)
+
+        except pymysql.Error as e:
+            return 528, "{}".format(str(e)), ""
+        except BaseException as e:
+            return 530, "{}".format(str(e)), ""
+        return 200, "ok", orders
+    
+    def search(self, store_id:str, title:str,tags: str,content: str):
+        try:
+            self.conn.execute(
+                "SELECT store_id, book_id, book_info FROM store "
+                "WHERE store_id LIKE %s "
+                "AND JSON_EXTRACT(book_info, '$.title') LIKE %s "
+                "AND JSON_EXTRACT(book_info, '$.tags') LIKE %s "
+                "AND JSON_EXTRACT(book_info, '$.content') LIKE %s ",
+                (store_id, title, tags, content)
+            )
+
+            books = []
+            book = {}
+            
+            for row in self.conn.fetchall():
+                a_store_id = row[0]
+                book_id = row[1]
+                info = json.loads(row[2])
+                a_title = info['title']
+
+                book = {
+                    'store_id': a_store_id,
+                    'book_id': book_id,
+                    'title': a_title
+                }
+
+                books.append(book)
+
+        except pymysql.Error as e:
+            return 528, "{}".format(str(e)), ""
+        except BaseException as e:
+            return 530, "{}".format(str(e)), ""
+        return 200, "ok", books
