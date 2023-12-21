@@ -68,3 +68,8 @@ class TestCancel:
         assert code == 200
         code = self.buyer.cancel(self.buyer_id, self.password, self.order_id)
         assert code != 200
+
+    # def test_dued_order(self):
+    #     time.sleep(120)
+    #     code = self.buyer.cancel_order(self.buyer_id, self.password, self.order_id)
+    #     assert code != 200

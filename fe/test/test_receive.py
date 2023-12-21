@@ -64,7 +64,7 @@ class TestReceive:
         assert code == 200
         code = self.buyer.payment(self.order_id)
         assert code == 200
-
+    
         code = self.buyer.receive(self.order_id)
         assert code != 200
 

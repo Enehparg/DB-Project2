@@ -22,7 +22,7 @@ def seller_add_book():
     store_id: str = request.json.get("store_id")
     book_info: dict = request.json.get("book_info")
     stock_level: str = request.json.get("stock_level", 0)
-    #book_info['pictures'] = []
+    book_info['pictures'] = []
 
     s = seller.Seller()
     code, message = s.add_book(

@@ -80,3 +80,14 @@ class Buyer:
         headers = {'token': self.token}
         r = requests.post(url, headers=headers, json=json)
         return r.status_code
+    
+    def search(self, store_id: str, title: str, tags: str, content: str):
+         json = {
+             "store_id": store_id,
+             "title": title,
+             "tags": tags,
+             "content": content
+         }
+         url = urljoin(self.url_prefix, 'search')
+         r = requests.post(url, json=json)
+         return r.status_code

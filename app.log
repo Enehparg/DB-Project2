@@ -989,3 +989,330 @@ INFO:werkzeug:127.0.0.1 - - [15/Dec/2023 00:18:02] "[35m[1mPOST /auth/register
 INFO:werkzeug:127.0.0.1 - - [15/Dec/2023 00:18:02] "GET /shutdown HTTP/1.1" 200 -
 INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:werkzeug:127.0.0.1 - - [21/Dec/2023 02:32:37] code 400, message Bad request version ('\xc0\x13\xc0')
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:32:37] "[31m[1m ¡Â  ¨®80IK\xa2|g\xe7h\xd3¡ã\xa9A\xb47-\x8c\xd2\x96z4\xd3 4><#\x85\xf6 \xfb\xbeu:¡ãk\x94h\x8cqz\xe2\x88\xcf\xdd7-P\xe3_x\x87\xbf\xf4+\xa1\xe6\xc2 $\xc0/\xc0+\xc00\xc0,\xcc\xa9\xcc¡§\xc0	\xc0\xc0[0m" 400 -
+ERROR:werkzeug:127.0.0.1 - - [21/Dec/2023 02:32:58] code 400, message Bad request version ('\xc0\x13\xc0')
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:32:58] "[31m[1m ¡Â  ¨®\xc6\x8c¨¤{\xc0\xe5)¡ã\xb4\x83¨´v¨¬_\xae:/M¨²¨¤'\x94\xb2Nc\x80z` 	aI U\x89\x83\x93K\xe6¨¨\xb5\xb3d\xdc\xcd\xbe!&0\x920+7\x97\xda¨¬@\x9d\xa5 $\xc0/\xc0+\xc00\xc0,\xcc\xa9\xcc¡§\xc0	\xc0\xc0[0m" 400 -
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:33:25] "[33mPOST /buyer/search HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:34:20] "[33mPOST /buyer/search HTTP/1.1[0m" 404 -
+ERROR:be.serve:Exception on /buyer/cancel [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 56, in cancel
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:36:04] "[35m[1mPOST /buyer/cancel HTTP/1.1[0m" 500 -
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:36:19] "[33mPOST /buyer/search HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:37:11] "[33mPOST /buyer/search HTTP/1.1[0m" 404 -
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:39:27] "[33mPOST /buyer/search HTTP/1.1[0m" 404 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:39:42] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:40:10] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:41:18] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:43:16] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:46:10] "[33mPOST /buyer/search_books HTTP/1.1[0m" 404 -
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:46:13] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:46:15] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:46:26] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/search [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 75, in search
+    store_id = request.json.get("store_id")
+               ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 02:46:56] "[35m[1mPOST /buyer/search HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:30:39] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:31:21] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:33:33] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:33:43] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:34:55] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:35:13] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
+INFO:werkzeug: * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ERROR:be.serve:Exception on /buyer/history [POST]
+Traceback (most recent call last):
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 2051, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1501, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1499, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\site-packages\flask\app.py", line 1485, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**req.view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "G:\github\DB-Project2\be\view\buyer.py", line 66, in history
+    user_id = request.json.get("user_id")
+              ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+INFO:werkzeug:127.0.0.1 - - [21/Dec/2023 09:36:14] "[35m[1mPOST /buyer/history HTTP/1.1[0m" 500 -
